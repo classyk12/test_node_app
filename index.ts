@@ -1,7 +1,36 @@
 import express from 'express'; //import express library into file
-import Joi, { options, valid } from 'joi'; //import joi for data validation
+import Joi from 'joi'; //import joi for data validation
+import logger from './logger';
+import authCheck  from './authenticator';
+import config from 'config';
+import helmet from 'helmet'; //used for api security e.g headers, authentication filters e.t.c
+
+
+
+
 const app = express(); //creates an express application
-app.use(express.json()) //import json serialization and deserialization in express
+app.use(helmet());
+
+app.use(express.json()) //import json serialization and deserialization in express (express.json()) is a middleware function
+app.use(express.urlencoded({extended:  true})) //import a middleware for us to use form data for POST request instead of raw json body 
+app.use(express.static('assets')); //this loads a middleware that allows usage of static files, e.g images, css and textfiles e.t.c
+
+
+app.use(authCheck);
+//this is used to create a custom middleware
+app.use(logger);
+
+//this is used to create a custom middleware
+
+   //use this to read values from config files
+  console.log(`Application Name = ${config.get('name')}`);
+  console.log(`Application Port = ${config.get('mail.port')}`);
+  
+  //read from custom config file
+  console.log(`Application Password = ${config.get('mail.password')}`);
+  console.log(`Application Password = ${process.env.app_password}`);
+ 
+
 
 
 const languages = [
@@ -38,6 +67,7 @@ app.get('/api/langs/:id/rate/:rating', (req, res) => {
     req.params
  );
 });
+
 
 //single query string, 
 app.get('/api/colors' , (req, res) => {
@@ -121,6 +151,9 @@ function validateLanguage(course:any){
    const validate = schema.validate(course);
    return validate;
 }
+
+
+//MIDDLEWARES
 
 
 //use environment variable to dynamically get port number

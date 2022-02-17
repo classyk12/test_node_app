@@ -1,0 +1,7 @@
+{
+    "name": "My sample express App - Prod",
+    "mail": {
+        "host": "sample-mail-prod",
+        "port" : "800"
+    }
+}

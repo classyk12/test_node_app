@@ -1,0 +1,8 @@
+{
+    "name": "My sample express App - Dev",
+    "mail": {
+        "host": "sample-mail-dev",
+        "port" : "400",
+        "password":"app_password"
+    }
+}
