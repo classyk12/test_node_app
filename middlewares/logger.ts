@@ -1,14 +1,19 @@
 import morgan from 'morgan'; //used to log req and responses
-import express from 'express'; //import express library into file
+import express, { NextFunction } from 'express'; //import express library into file
 const app = express(); //creates an express application
 
- //this allows us to define logging levels based on env
+//  //this allows us to define logging levels based on env
 const startUpDebugger =  require('debug')('app:startup');
 const dbDebugger =  require('debug')('app:db');
 
 
-function logRequest (req: any, res: any, next: () => void){
+ function logRequest (req: any, res: any, next:  NextFunction){
    console.log('Logging...');
+  next(); //use this to pass control to the next function e.g the endpoint. if this is ommited, the req,res cycle will never get terminated.
+}
+
+ function logRequest2 (req: any, res: any, next:  NextFunction){
+   console.log('Logging.2222..');
   next(); //use this to pass control to the next function e.g the endpoint. if this is ommited, the req,res cycle will never get terminated.
 }
 
@@ -30,4 +35,4 @@ else{
 }
 
 
-export default logRequest;
+export default {logRequest, logRequest2};

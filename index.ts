@@ -1,5 +1,5 @@
 import express from 'express'; //import express library into file
-import logger from './middlewares/logger';
+import logRequest from './middlewares/logger';
 import authCheck  from './middlewares/authenticator';
 import config from 'config';
 import helmet from 'helmet'; //used for api security e.g headers, authentication filters e.t.c
@@ -15,6 +15,10 @@ app.use(express.json()) //import json serialization and deserialization in expre
 app.use(express.urlencoded({extended:  true})) //import a middleware for us to use form data for POST request instead of raw json body 
 app.use(express.static('assets')); //this loads a middleware that allows usage of static files, e.g images, css and textfiles e.t.c
 
+app.use(authCheck);
+//this is used to create a custom middleware
+app.use(logRequest.logRequest2);
+
 //import newly exported courses modules into index module
 app.use('/', home);
 app.use('/api/langs', langs);
@@ -23,9 +27,7 @@ app.use('/api/colors', color);
 
 
 
-app.use(authCheck);
-//this is used to create a custom middleware
-app.use(logger);
+
 
 //this is used to create a custom middleware
 
