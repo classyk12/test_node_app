@@ -7,7 +7,6 @@ import langs from './routes/langs';
 import home from './routes/home';
 import color from './routes/colors';
 
-
 const app = express(); //creates an express application
 app.use(helmet());
 
@@ -23,10 +22,6 @@ app.use(logRequest.logRequest2);
 app.use('/', home);
 app.use('/api/langs', langs);
 app.use('/api/colors', color);
-
-
-
-
 
 
 //this is used to create a custom middleware
