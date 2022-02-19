@@ -2,8 +2,12 @@ import morgan from 'morgan'; //used to log req and responses
 import express from 'express'; //import express library into file
 const app = express(); //creates an express application
 
+ //this allows us to define logging levels based on env
+const startUpDebugger =  require('debug')('app:startup');
+const dbDebugger =  require('debug')('app:db');
 
-export default function logRequest (req: any, res: any, next: () => void){
+
+function logRequest (req: any, res: any, next: () => void){
    console.log('Logging...');
   next(); //use this to pass control to the next function e.g the endpoint. if this is ommited, the req,res cycle will never get terminated.
 }
@@ -15,10 +19,15 @@ console.log(environment);
 //make decision based on environment
 if(environment === 'development'){
    app.use(morgan('tiny'));
-   console.log('morgan logging loaded...')
+   //use debug to print and log data
+   startUpDebugger('morgan logging loaded...');
+    dbDebugger('morgan logging not loaded in dev');
+
 }
 
 else{
-   console.log('morgan logging not loaded...')
+   dbDebugger('morgan logging not loaded...');
 }
 
+
+export default logRequest;
