@@ -1,3 +1,5 @@
+//ADD SWAGGER AS HOME SCREEN
+
 import express from 'express'; //import express library into file
 const router = express.Router(); //use route when seperating routes/controllers into seperate files. express decleration on the index.ts remain the same 
 

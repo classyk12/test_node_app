@@ -1,11 +1,9 @@
 import express from 'express'; //import express library into file
 import logRequest from './middlewares/logger';
 import authCheck  from './middlewares/authenticator';
-import config from 'config';
 import helmet from 'helmet'; //used for api security e.g headers, authentication filters e.t.c
-import langs from './routes/langs';
+import langs from './routes/genres';
 import home from './routes/home';
-import color from './routes/colors';
 
 const app = express(); //creates an express application
 app.use(helmet());
@@ -20,25 +18,7 @@ app.use(logRequest.logRequest2);
 
 //import newly exported courses modules into index module
 app.use('/', home);
-app.use('/api/langs', langs);
-app.use('/api/colors', color);
-
-
-//this is used to create a custom middleware
-
-   //use this to read values from config files
-  console.log(`Application Name = ${config.get('name')}`);
-  console.log(`Application Port = ${config.get('mail.port')}`);
-  
-  //read from custom config file
-  console.log(`Application Password = ${config.get('mail.password')}`);
-  console.log(`Application Password = ${process.env.app_password}`); //use this to read from env variables
- 
-
-
-
-//MIDDLEWARES
-
+app.use('/api/genres', langs);
 
 //use environment variable to dynamically get port number
 
