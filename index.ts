@@ -4,7 +4,7 @@ import authCheck from "./middlewares/authenticator";
 import helmet from "helmet"; //used for api security e.g headers, authentication filters e.t.c
 import langs from "./routes/genres";
 import home from "./routes/home";
-import helper from "./persistence/db-helper-exercise";
+import helper from "./persistence/mongo-helper";
 
 const app = express(); //creates an express application
 app.use(helmet());

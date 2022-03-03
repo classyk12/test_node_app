@@ -1,3 +1,4 @@
+import { assert, func } from "joi";
 import mongoose from "mongoose";
 
 //connect to MONGODB
@@ -10,12 +11,47 @@ export default function startMongoService() {
 
 //create schema for entity
 const courseSchema = new mongoose.Schema({
-  name: String,
-  author: String,
-  tags: [String],
+  name: {
+    type: String,
+    required: true,
+    minlength: 20,
+    maxlength: 255,
+
+    // match: /pattern/
+  },
+
+  //use the num validator property to restrict input to a predefined set of strings
+  category: {
+    type: String,
+
+    enum: ["web", "mobile", "desktop"],
+  },
+  author: { type: String, required: true },
+
+  //custom validators
+  tags: {
+    type: Array,
+    validate: {
+      validator: function (v: any[]) {
+        return v && v.length > 0;
+      },
+      message: "A course must have at least one tag",
+    },
+  },
   date: { type: Date, default: Date.now },
   isPublished: Boolean,
-  price: Number,
+
+  //create conditional validation.. validate price only when the course is published
+  price: {
+    type: Number,
+    required: true,
+    min: 5,
+    max: 200,
+
+    // function () {
+    //   return this.isPublished;
+    // },
+  },
 });
 
 //convert/maps the mongoose schema to a typescript class/model
@@ -23,17 +59,22 @@ const courseSchema = new mongoose.Schema({
 const Course = mongoose.model("Course", courseSchema);
 
 async function createCourse() {
-  //create an object of the course class
-  const course = new Course({
-    name: "angular Course",
-    author: "Mosh",
-    tags: ["Angular", "Frontend"],
-    isPublished: true,
-    price: 20,
-  });
-
-  const result = await course.save();
-  console.log(result);
+  try {
+    const course = new Course({
+      name: "new networking Course",
+      author: "Faith",
+      //tags: ["CISS", "Networking"],
+      isPublished: true,
+      category: "ios",
+      price: 10,
+    });
+    const result = await course.save();
+    console.log(result);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.log(err.message);
+    }
+  }
 }
 
 async function getCourses() {
@@ -119,7 +160,7 @@ async function filterCourse3() {
   }
 }
 
-filterCourse3();
+createCourse();
 
 //comparsion operator
 //eq =  equal,
