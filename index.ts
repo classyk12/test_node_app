@@ -2,9 +2,9 @@ import express from "express"; //import express library into file
 import logRequest from "./middlewares/logger";
 import authCheck from "./middlewares/authenticator";
 import helmet from "helmet"; //used for api security e.g headers, authentication filters e.t.c
-import langs from "./routes/genres";
+import genres from "./routes/genres";
 import home from "./routes/home";
-import helper from "./persistence/mongo-helper";
+import connectToDB from "./persistence/data";
 
 const app = express(); //creates an express application
 app.use(helmet());
@@ -19,11 +19,11 @@ app.use(logRequest.logRequest2);
 
 //import newly exported courses modules into index module
 app.use("/", home);
-app.use("/api/genres", langs);
+app.use("/api/genres", genres);
 
 //use environment variable to dynamically get port number
 
-helper(); //load mongo
+connectToDB(); //load mongo
 const port = process.env.PORT ?? 3000;
 
 app.listen(port, () => console.log(`Listening on port ${port}...`));

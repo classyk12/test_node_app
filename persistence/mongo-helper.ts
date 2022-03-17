@@ -1,4 +1,3 @@
-import { assert, func } from "joi";
 import mongoose from "mongoose";
 
 //connect to MONGODB
